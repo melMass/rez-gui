@@ -1,4 +1,7 @@
-from rezgui.Qt import QtCore, QtGui
+from rezgui.Qt.QtCore import QItemSelectionModel
+from rezgui.Qt import QtCore
+from rezgui.Qt.QtGui import QPalette
+from rezgui.Qt.QtWidgets import QWidget, QAbstractItemView, QHeaderView, QTableWidget, QTableWidgetItem
 from rezgui.mixins.ContextViewMixin import ContextViewMixin
 from rez.package_filter import PackageFilterList
 from rezgui.util import get_timestamp_str, update_font, get_icon_widget, create_pane
@@ -6,7 +9,7 @@ from rez.packages_ import iter_packages
 from rez.vendor.version.version import VersionRange
 
 
-class VariantVersionsTable(QtGui.QTableWidget, ContextViewMixin):
+class VariantVersionsTable(QTableWidget, ContextViewMixin):
     def __init__(self, context_model=None, reference_variant=None, parent=None):
         super(VariantVersionsTable, self).__init__(0, 2, parent)
         ContextViewMixin.__init__(self, context_model)
@@ -21,20 +24,20 @@ class VariantVersionsTable(QtGui.QTableWidget, ContextViewMixin):
         self.setWordWrap(False)
         self.setGridStyle(QtCore.Qt.DotLine)
         self.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-        self.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.setVerticalScrollMode(QtGui.QAbstractItemView.ScrollPerPixel)
+        self.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
 
         hh = self.horizontalHeader()
         hh.setVisible(False)
         vh = self.verticalHeader()
-        vh.setResizeMode(QtGui.QHeaderView.ResizeToContents)
+        vh.setSectionResizeMode(QHeaderView.ResizeToContents)
 
         self.clear()
 
     def selectionCommand(self, index, event=None):
-        return QtGui.QItemSelectionModel.ClearAndSelect if self.allow_selection \
-            else QtGui.QItemSelectionModel.NoUpdate
+        return QItemSelectionModel.ClearAndSelect if self.allow_selection \
+            else QItemSelectionModel.NoUpdate
 
     def clear(self):
         super(VariantVersionsTable, self).clear()
@@ -64,7 +67,7 @@ class VariantVersionsTable(QtGui.QTableWidget, ContextViewMixin):
 
         hh = self.horizontalHeader()
         self.setHorizontalHeaderLabels(["path", "released"])
-        hh.setResizeMode(0, QtGui.QHeaderView.Interactive)
+        hh.setSectionResizeMode(0, QHeaderView.Interactive)
         hh.setStretchLastSection(True)
         hh.setVisible(True)
 
@@ -94,11 +97,11 @@ class VariantVersionsTable(QtGui.QTableWidget, ContextViewMixin):
                 packages = sorted(it, key=lambda x: x.version, reverse=True)
 
             self.setRowCount(len(packages))
-            brush = self.palette().brush(QtGui.QPalette.Active, QtGui.QPalette.Base)
+            brush = self.palette().brush(QPalette.Active, QPalette.Base)
 
             for row, package in enumerate(packages):
                 version_str = str(package.version) + ' '
-                item = QtGui.QTableWidgetItem(version_str)
+                item = QTableWidgetItem(version_str)
                 item.setTextAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
                 self.setVerticalHeaderItem(row, item)
 
@@ -112,7 +115,7 @@ class VariantVersionsTable(QtGui.QTableWidget, ContextViewMixin):
                     update_font(item, bold=True, italic=True)
 
                 def _item():
-                    item_ = QtGui.QTableWidgetItem()
+                    item_ = QTableWidgetItem()
                     item_.setBackground(brush)  # get rid of mouse-hover coloring
                     return item_
 
@@ -139,7 +142,7 @@ class VariantVersionsTable(QtGui.QTableWidget, ContextViewMixin):
                     icons.append(icon)
 
                 if icons:
-                    label = QtGui.QLabel(txt)
+                    label = QLabel(txt)
                     pane = create_pane(icons + [label, None], True, compact=True)
                     self.setCellWidget(row, 0, pane)
                 else:

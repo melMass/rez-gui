@@ -1,4 +1,5 @@
-from rezgui.Qt import QtCore, QtGui
+from rezgui.Qt import QtCore, QtWidgets, QtGui
+from rezgui.Qt.QtWidgets import QApplication
 from rezgui.objects.Config import Config
 #from rezgui.objects.ProcessTrackerThread import ProcessTrackerThread
 from rezgui import organisation_name, application_name
@@ -12,7 +13,7 @@ import os.path
 import os
 
 
-class App(QtGui.QApplication):
+class App(QApplication):
     def __init__(self, argv=None):
         if argv is None:
             argv = sys.argv
@@ -53,14 +54,14 @@ class App(QtGui.QApplication):
         busy_cursor = QtGui.QCursor(QtCore.Qt.WaitCursor)
 
         with self.status("Loading %s..." % filepath):
-            QtGui.QApplication.setOverrideCursor(busy_cursor)
+            QApplication.setOverrideCursor(busy_cursor)
             try:
                 context = ResolvedContext.load(filepath)
             except ResolvedContextError as e:
-                QtGui.QMessageBox.critical(self.main_window,
+                QtWidgets.QMessageBox.critical(self.main_window,
                                            "Failed to load context", str(e))
             finally:
-                QtGui.QApplication.restoreOverrideCursor()
+                QApplication.restoreOverrideCursor()
 
         if context:
             path = os.path.realpath(filepath)

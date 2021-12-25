@@ -1,11 +1,11 @@
-from rezgui.Qt import QtGui
+from rezgui.Qt.QtWidgets import QTabWidget
 from rezgui.widgets.BrowsePackageWidget import BrowsePackageWidget
 from rezgui.widgets.ContextSettingsWidget import ContextSettingsWidget
 from rezgui.mixins.ContextViewMixin import ContextViewMixin
 from rezgui.util import get_icon
 
 
-class BrowsePackagePane(QtGui.QTabWidget, ContextViewMixin):
+class BrowsePackagePane(QTabWidget, ContextViewMixin):
     """A widget for browsing rez packages.
 
     Unlike `BrowsePackageWidget`, this class has its own settings tab, so that

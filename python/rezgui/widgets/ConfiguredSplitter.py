@@ -1,7 +1,7 @@
-from rezgui.Qt import QtGui
+from rezgui.Qt.QtWidgets import QSplitter
 
 
-class ConfiguredSplitter(QtGui.QSplitter):
+class ConfiguredSplitter(QSplitter):
     """A QSplitter that remembers its widget sizes.
     """
     def __init__(self, config, config_key, *nargs, **kwargs):

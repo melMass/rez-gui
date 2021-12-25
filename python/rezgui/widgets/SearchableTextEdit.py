@@ -1,8 +1,9 @@
-from rezgui.Qt import QtGui
+from rezgui.Qt.QtWidgets import QTextEdit
+from rezgui.Qt.QtGui import QTextCursor
 from rezgui.widgets.FindPopup import FindPopup
 
 
-class SearchableTextEdit(QtGui.QTextEdit):
+class SearchableTextEdit(QTextEdit):
     """A TextEdit that can be searched.
     """
     def __init__(self, parent=None):
@@ -31,7 +32,7 @@ class SearchableTextEdit(QtGui.QTextEdit):
     def _find_text(self, word):
         if not self.find(word):
             # search from top
-            self.moveCursor(QtGui.QTextCursor.Start)
+            self.moveCursor(QTextCursor.Start)
             self.find(word)
 
 

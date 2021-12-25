@@ -1,10 +1,11 @@
-from rezgui.Qt import QtCore, QtGui
+from rezgui.Qt.QtCore import QThread, QTimer
+from rezgui.Qt.QtWidgets import QLabel, QProgressBar, QWidget
 from rezgui.util import create_pane
 from rezgui.objects.LoadPackagesThread import LoadPackagesThread
 from functools import partial
 
 
-class PackageLoadingWidget(QtGui.QWidget):
+class PackageLoadingWidget(QWidget):
     def __init__(self, parent=None):
         super(PackageLoadingWidget, self).__init__(parent)
         self.main_widget = None
@@ -14,8 +15,8 @@ class PackageLoadingWidget(QtGui.QWidget):
 
         self.timer = None
 
-        label = QtGui.QLabel("Loading Packages...")
-        self.bar = QtGui.QProgressBar()
+        label = QLabel("Loading Packages...")
+        self.bar = QProgressBar()
         self.loading_widget = create_pane([label, self.bar, None], False, compact=True)
 
         create_pane([self.loading_widget], True, compact=True, compact_spacing=0,
@@ -61,7 +62,7 @@ class PackageLoadingWidget(QtGui.QWidget):
         self.worker.progress.connect(partial(self._progress, id_))
         self.worker.finished.connect(partial(self._packagesLoaded, id_))
 
-        thread = QtCore.QThread()
+        thread = QThread()
         self.worker.moveToThread(thread)
         thread.started.connect(self.worker.run)
 
@@ -76,7 +77,7 @@ class PackageLoadingWidget(QtGui.QWidget):
             if self.main_widget is not None:
                 self.main_widget.hide()
         else:
-            self.timer = QtCore.QTimer()
+            self.timer = QTimer()
             self.timer.setSingleShot(True)
             self.timer.setInterval(self.swap_delay)
             fn = partial(self._swap_to_loader, id_)

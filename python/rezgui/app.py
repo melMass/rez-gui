@@ -24,23 +24,24 @@ def run(opts=None, parser=None):
     app.set_main_window(main_window)
     main_window.show()
 
-    if opts.diff:
-        # open context in diff mode against another
-        context_files = get_context_files(opts.diff)
-        subwindow = main_window.open_context_and_diff_with_file(*context_files)
+    # if opts.diff:
+    #     # open context in diff mode against another
+    #     context_files = get_context_files(opts.diff)
+    #     subwindow = main_window.open_context_and_diff_with_file(*context_files)
 
-        if subwindow:
-            subwindow.showMaximized()
+    #     if subwindow:
+    #         subwindow.showMaximized()
+    # else:
+    # open contexts
+    # context_files = get_context_files(opts.FILE or [])
+    context_files = get_context_files([])
+    for filepath in context_files:
+        subwindow = main_window.open_context(filepath)
+
+    if len(context_files) == 1:
+        subwindow.showMaximized()
     else:
-        # open contexts
-        context_files = get_context_files(opts.FILE or [])
-        for filepath in context_files:
-            subwindow = main_window.open_context(filepath)
-
-        if len(context_files) == 1:
-            subwindow.showMaximized()
-        else:
-            main_window.cascade()
+        main_window.cascade()
 
     sys.exit(app.exec_())
 

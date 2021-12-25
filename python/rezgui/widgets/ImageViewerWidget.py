@@ -1,8 +1,8 @@
-from rezgui.Qt import QtCore, QtGui
+from rezgui.Qt import QtCore, QtWidgets, QtGui
 from rezgui.util import create_pane
 
 
-class GraphicsView(QtGui.QGraphicsView):
+class GraphicsView(QtWidgets.QGraphicsView):
     def __init__(self, parent=None, max_scale=None):
         super(GraphicsView, self).__init__(parent)
         self.interactive = True
@@ -63,13 +63,13 @@ class GraphicsView(QtGui.QGraphicsView):
         vs.setValue(pos.y())
 
 
-class ImageViewerWidget(QtGui.QWidget):
+class ImageViewerWidget(QtWidgets.QWidget):
     def __init__(self, image_file, parent=None):
         super(ImageViewerWidget, self).__init__(parent)
         self.fit = False
         self.prev_scale = 1.0
 
-        self.scene = QtGui.QGraphicsScene()
+        self.scene = QtWidgets.QGraphicsScene()
         image = QtGui.QPixmap(image_file)
         self.image_item = self.scene.addPixmap(image)
         self.image_item.setTransformationMode(QtCore.Qt.SmoothTransformation)

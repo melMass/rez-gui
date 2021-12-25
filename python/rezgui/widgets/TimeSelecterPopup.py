@@ -1,10 +1,10 @@
-from rezgui.Qt import QtCore, QtGui
+from rezgui.Qt import QtCore, QtWidgets, QtGui
 from rezgui.util import update_font, create_pane
 from rez.utils.formatting import readable_time_duration
 import math
 
 
-class Canvas(QtGui.QWidget):
+class Canvas(QtWidgets.QWidget):
 
     secondsHover = QtCore.Signal(int)
     secondsClicked = QtCore.Signal(int)
@@ -84,22 +84,22 @@ class Canvas(QtGui.QWidget):
         return secs
 
 
-class TimeSelecterPopup(QtGui.QFrame):
+class TimeSelecterPopup(QtWidgets.QFrame):
 
     secondsClicked = QtCore.Signal(int)
 
     def __init__(self, pivot_widget, width=240, height=160, parent=None):
         super(TimeSelecterPopup, self).__init__(parent)
-        self.setFrameStyle(QtGui.QFrame.Panel | QtGui.QFrame.Raised)
+        self.setFrameStyle(QtWidgets.QFrame.Panel | QtWidgets.QFrame.Raised)
         self.setWindowFlags(QtCore.Qt.Popup)
         self.seconds = None
 
-        self.label = QtGui.QLabel("")
+        self.label = QtWidgets.QLabel("")
 
-        canvas_frame = QtGui.QFrame()
-        canvas_frame.setFrameStyle(QtGui.QFrame.Panel | QtGui.QFrame.Sunken)
+        canvas_frame = QtWidgets.QFrame()
+        canvas_frame.setFrameStyle(QtWidgets.QFrame.Panel | QtWidgets.QFrame.Sunken)
         canvas = Canvas(width, height)
-        layout = QtGui.QVBoxLayout()
+        layout = QtWidgets.QVBoxLayout()
         layout.setSpacing(2)
         layout.setContentsMargins(2, 2, 2, 2)
         layout.addWidget(canvas)

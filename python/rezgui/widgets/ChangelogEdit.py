@@ -1,16 +1,18 @@
-from rezgui.Qt import QtCore, QtGui
-import cgi
+from rezgui.Qt import QtCore
+from rezgui.Qt.QtGui import QCursor, QTextCursor
+from rezgui.Qt.QtWidgets import QPlainTextEdit, QApplication
+import html
 
 
 def plaintext_to_html(txt):
-    out = cgi.escape(txt)
+    out = html.escape(txt)
     out = out.replace('\t', "    ")
     out = out.replace(' ', "&nbsp;")
     out = out.replace('\n', "<br>")
     return out
 
 
-class ChangelogEdit(QtGui.QPlainTextEdit):
+class ChangelogEdit(QPlainTextEdit):
     def __init__(self, parent=None):
         super(ChangelogEdit, self).__init__(parent)
         self.setReadOnly(True)
@@ -30,14 +32,14 @@ class ChangelogEdit(QtGui.QPlainTextEdit):
                     % (heading, body))
             lines.append(html)
 
-        busy_cursor = QtGui.QCursor(QtCore.Qt.WaitCursor)
-        QtGui.QApplication.setOverrideCursor(busy_cursor)
+        busy_cursor = QCursor(QtCore.Qt.WaitCursor)
+        QApplication.setOverrideCursor(busy_cursor)
         try:
             self.clear()
             self.appendHtml(''.join(lines))
-            self.moveCursor(QtGui.QTextCursor.Start)
+            self.moveCursor(QTextCursor.Start)
         finally:
-            QtGui.QApplication.restoreOverrideCursor()
+            QApplication.restoreOverrideCursor()
 
 
 class VariantChangelogEdit(ChangelogEdit):

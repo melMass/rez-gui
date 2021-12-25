@@ -1,15 +1,17 @@
-from rezgui.Qt import QtCore, QtGui
+from rezgui.Qt.QtWidgets import QCompleter, QLineEdit
+from rezgui.Qt.QtGui import QPalette
+from rezgui.Qt.QtCore import QStringListModel, Signal, Qt, QEvent
 from rezgui.models.ContextModel import ContextModel
 from rezgui.mixins.ContextViewMixin import ContextViewMixin
 from rez.packages_ import get_completions, iter_packages
 from rez.vendor.version.requirement import Requirement
 
 
-class PackageLineEdit(QtGui.QLineEdit, ContextViewMixin):
+class PackageLineEdit(QLineEdit, ContextViewMixin):
 
-    focusOutViaKeyPress = QtCore.Signal(str)
-    focusOut = QtCore.Signal(str)
-    focusIn = QtCore.Signal()
+    focusOutViaKeyPress = Signal(str)
+    focusOut = Signal(str)
+    focusIn = Signal()
 
     def __init__(self, context_model=None, parent=None, family_only=False,
                  read_only=False):
@@ -23,16 +25,16 @@ class PackageLineEdit(QtGui.QLineEdit, ContextViewMixin):
         self.normal_font = self.font()
         self.placeholder_font = self.font()
         self.placeholder_font.setItalic(True)
-        self.normal_text_color = pal.color(QtGui.QPalette.Text)
-        self.placeholder_text_color = pal.color(QtGui.QPalette.Disabled,
-                                                QtGui.QPalette.Text)
+        self.normal_text_color = pal.color(QPalette.Text)
+        self.placeholder_text_color = pal.color(QPalette.Disabled,
+                                                QPalette.Text)
         if not self.read_only:
             self.setPlaceholderText("enter package")
             self._update_font()
 
-        self.completer = QtGui.QCompleter(self)
-        self.completer.setCompletionMode(QtGui.QCompleter.PopupCompletion)
-        self.completions = QtGui.QStringListModel(self.completer)
+        self.completer = QCompleter(self)
+        self.completer.setCompletionMode(QCompleter.PopupCompletion)
+        self.completions = QStringListModel(self.completer)
         self.completer.setModel(self.completions)
         self.setCompleter(self.completer)
 
@@ -45,10 +47,10 @@ class PackageLineEdit(QtGui.QLineEdit, ContextViewMixin):
 
     def event(self, event):
         # keyPressEvent does not capture tab
-        if event.type() == QtCore.QEvent.KeyPress \
-                and event.key() in (QtCore.Qt.Key_Tab,
-                                    QtCore.Qt.Key_Enter,
-                                    QtCore.Qt.Key_Return):
+        if event.type() == QEvent.KeyPress \
+                and event.key() in (Qt.Key_Tab,
+                                    Qt.Key_Enter,
+                                    Qt.Key_Return):
             self._update_status()
             self.focusOutViaKeyPress.emit(self.text())
             return True
@@ -89,8 +91,8 @@ class PackageLineEdit(QtGui.QLineEdit, ContextViewMixin):
 
         self.setFont(font)
         pal = self.palette()
-        pal.setColor(QtGui.QPalette.Active, QtGui.QPalette.Text, color)
-        pal.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Text, color)
+        pal.setColor(QPalette.Active, QPalette.Text, color)
+        pal.setColor(QPalette.Inactive, QPalette.Text, color)
         self.setPalette(pal)
 
     def _contextChanged(self, flags=0):

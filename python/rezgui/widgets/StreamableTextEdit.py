@@ -1,7 +1,7 @@
-from rezgui.Qt import QtCore, QtGui
+from rezgui.Qt import QtCore, QtWidgets, QtGui
 from rezgui.widgets.SearchableTextEdit import SearchableTextEdit
 import threading
-
+import sys
 
 class StreamableTextEdit(SearchableTextEdit):
     """A QTextEdit that also acts like a write-only file object.
@@ -22,6 +22,9 @@ class StreamableTextEdit(SearchableTextEdit):
 
     def isatty(self):
         return False
+
+    def flush(self):
+        sys.stdout.flush()
 
     def write(self, txt):
         emit = False

@@ -1,20 +1,23 @@
-from rezgui.Qt import QtCore, QtGui
+from rezgui.Qt import QtCore, QtWidgets, QtGui
+from rezgui.Qt.QtCore import QStringListModel, Qt
+from rezgui.Qt.QtGui import QKeySequence
+from rezgui.Qt.QtWidgets import QShortcut, QFrame, QLineEdit, QPushButton, QWidget, QTabWidget, QTableWidget, QAbstractItemView, QHeaderView, QTableWidgetItem, QCompleter
 from rezgui.util import create_pane
 
 
-class FindPopup(QtGui.QFrame):
+class FindPopup(QFrame):
 
     find = QtCore.Signal(str)
 
     def __init__(self, pivot_widget, pivot_position=None, words=None,
                  initial_word=None, close_on_find=True, parent=None):
         super(FindPopup, self).__init__(parent)
-        self.setFrameStyle(QtGui.QFrame.Panel | QtGui.QFrame.Raised)
+        self.setFrameStyle(QFrame.Panel | QFrame.Raised)
         self.setWindowFlags(QtCore.Qt.Popup)
         self.close_on_find = close_on_find
 
-        self.edit = QtGui.QLineEdit()
-        self.btn = QtGui.QPushButton("Find")
+        self.edit = QLineEdit()
+        self.btn = QPushButton("Find")
         create_pane([self.edit, self.btn], True, compact=True,
                     compact_spacing=0, parent_widget=self)
         self.edit.setFocus()
@@ -25,9 +28,9 @@ class FindPopup(QtGui.QFrame):
 
         self.completer = None
         if words:
-            self.completer = QtGui.QCompleter(self)
-            self.completer.setCompletionMode(QtGui.QCompleter.PopupCompletion)
-            self.completions = QtGui.QStringListModel(words, self.completer)
+            self.completer = QCompleter(self)
+            self.completer.setCompletionMode(QCompleter.PopupCompletion)
+            self.completions = QStringListModel(words, self.completer)
             self.completer.setModel(self.completions)
             self.edit.setCompleter(self.completer)
 
@@ -38,7 +41,7 @@ class FindPopup(QtGui.QFrame):
         self.btn.clicked.connect(self._find)
         self.edit.returnPressed.connect(self._find)
 
-        find_shortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+F"), self)
+        find_shortcut = QShortcut(QKeySequence("Ctrl+F"), self)
         find_shortcut.activated.connect(self._find_again)
 
     def _find(self):

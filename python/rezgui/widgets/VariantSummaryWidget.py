@@ -1,27 +1,28 @@
-from rezgui.Qt import QtCore, QtGui
+from rezgui.Qt import QtCore, QtWidgets, QtGui
+from rezgui.Qt.QtWidgets import QWidget, QLabel, QTabWidget, QTableWidget, QAbstractItemView, QHeaderView, QTableWidgetItem
 from rezgui.util import create_pane, get_timestamp_str
 from rez.packages_ import Package, Variant
 from rez.util import find_last_sublist
 
 
-class VariantSummaryWidget(QtGui.QWidget):
+class VariantSummaryWidget(QWidget):
     def __init__(self, parent=None):
         super(VariantSummaryWidget, self).__init__(parent)
         self.variant = None
 
-        self.label = QtGui.QLabel()
+        self.label = QLabel()
 
-        self.table = QtGui.QTableWidget(0, 1)
+        self.table = QTableWidget(0, 1)
         self.table.setGridStyle(QtCore.Qt.DotLine)
         self.table.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.table.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
+        self.table.setSelectionMode(QAbstractItemView.NoSelection)
         self.table.setAlternatingRowColors(True)
 
         hh = self.table.horizontalHeader()
         hh.setStretchLastSection(True)
         hh.setVisible(False)
         vh = self.table.verticalHeader()
-        vh.setResizeMode(QtGui.QHeaderView.ResizeToContents)
+        vh.setSectionResizeMode(QHeaderView.ResizeToContents)
 
         create_pane([self.label, self.table], False, compact=True,
                     parent_widget=self)
@@ -87,10 +88,10 @@ class VariantSummaryWidget(QtGui.QWidget):
             self.table.setRowCount(len(rows))
             for i, row in enumerate(rows):
                 label, value = row
-                item = QtGui.QTableWidgetItem(label)
+                item = QTableWidgetItem(label)
                 item.setTextAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTop)
                 self.table.setVerticalHeaderItem(i, item)
-                item = QtGui.QTableWidgetItem(value)
+                item = QTableWidgetItem(value)
                 self.table.setItem(i, 0, item)
 
             vh = self.table.verticalHeader()

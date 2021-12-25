@@ -1,11 +1,11 @@
-from rezgui.Qt import QtCore, QtGui
+from rezgui.Qt import QtCore, QtWidgets, QtGui
 from rezgui.mixins.ContextViewMixin import ContextViewMixin
 from rezgui.models.ContextModel import ContextModel
 from rezgui.dialogs.WriteGraphDialog import view_graph
 from rezgui.util import add_menu_action
 
 
-class ViewGraphButton(QtGui.QToolButton, ContextViewMixin):
+class ViewGraphButton(QtWidgets.QToolButton, ContextViewMixin):
     def __init__(self, context_model=None, parent=None):
         super(ViewGraphButton, self).__init__(parent)
         ContextViewMixin.__init__(self, context_model)
@@ -13,16 +13,16 @@ class ViewGraphButton(QtGui.QToolButton, ContextViewMixin):
         # If not None, prunes the graph to this package
         self.package_name = None
 
-        menu = QtGui.QMenu()
-        self.action_1 = add_menu_action(menu, "View Resolve Graph...",
+        self.menu = QtWidgets.QMenu()
+        self.action_1 = add_menu_action(self.menu, "View Resolve Graph...",
                                         self._view_resolve_graph, "graph")
-        self.action_2 = add_menu_action(menu, "View Dependency Graph...",
+        self.action_2 = add_menu_action(self.menu, "View Dependency Graph...",
                                         self._view_dependency_graph)
 
-        self.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
+        self.setPopupMode(QtWidgets.QToolButton.MenuButtonPopup)
         self.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
         self.setDefaultAction(self.action_1)
-        self.setMenu(menu)
+        self.setMenu(self.menu)
 
         self.refresh()
 

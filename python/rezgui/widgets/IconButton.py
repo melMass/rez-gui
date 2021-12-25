@@ -1,8 +1,8 @@
-from rezgui.Qt import QtCore, QtGui
+from rezgui.Qt import QtCore, QtWidgets, QtGui
 from rezgui.util import get_icon
 
 
-class IconButton(QtGui.QLabel):
+class IconButton(QtWidgets.QLabel):
 
     clicked = QtCore.Signal(int)
 

@@ -1,4 +1,4 @@
-from rezgui.Qt import QtGui
+from rezgui.Qt import QtWidgets
 from rezgui.objects.App import app
 from rezgui.util import add_menu_action
 from rezgui.windows.BrowsePackageSubWindow import BrowsePackageSubWindow
@@ -9,12 +9,12 @@ from functools import partial
 import time
 
 
-class MainWindow(QtGui.QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setWindowTitle("Rez GUI")
 
-        self.mdi = QtGui.QMdiArea(self)
+        self.mdi = QtWidgets.QMdiArea(self)
         self.mdi.show()
         self.setCentralWidget(self.mdi)
         self.statusBar().showMessage("")
@@ -107,10 +107,10 @@ class MainWindow(QtGui.QMainWindow):
                 bar.showMessage(txt, min_display_time - milisecs)
 
     def _open_context(self):
-        filepath = QtGui.QFileDialog.getOpenFileName(
+        filepath = QtWidgets.QFileDialog.getOpenFileName(
             self, "Open Context", filter="Context files (*.rxt)")
-        if filepath:
-            self.open_context(str(filepath))
+        if filepath[0]:
+            self.open_context(str(filepath[0]))
 
     def _add_context_subwindow(self, context=None):
         subwindow = ContextSubWindow(context)
